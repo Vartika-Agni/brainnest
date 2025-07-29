@@ -5,10 +5,12 @@ import { Input } from "./Input";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 
-enum ContentType {
-  Youtube = "youtube",
-  Twitter = "twitter",
-}
+export const ContentTypes = {
+  Youtube: "youtube",
+  Twitter: "twitter",
+} as const;
+
+type ContentType = typeof ContentTypes[keyof typeof ContentTypes];
 
 interface CreateContentModalProps {
   open: boolean;
@@ -18,7 +20,7 @@ interface CreateContentModalProps {
 export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
-  const [type, setType] = useState(ContentType.Youtube);
+  const [type, setType] = useState<ContentType>("youtube");
 
   async function addContent() {
     const title = titleRef.current?.value;
@@ -63,16 +65,16 @@ export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
                   <div className="flex gap-1 justify-center pb-2">
                     <Button
                       text="Youtube"
-                      variant={type === ContentType.Youtube ? "primary" : "secondary"}
+                      variant={type === "youtube" ? "primary" : "secondary"}
                       onClick={() => {
-                        setType(ContentType.Youtube);
+                        setType("youtube");
                       }}
                     />
                     <Button
                       text="Twitter"
-                      variant={type === ContentType.Twitter ? "primary" : "secondary"}
+                      variant={type === "twitter" ? "primary" : "secondary"}
                       onClick={() => {
-                        setType(ContentType.Twitter);
+                        setType("twitter");
                       }}
                     />
                   </div>
